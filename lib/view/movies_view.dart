@@ -22,21 +22,28 @@ class _MoviesViewState extends State<MoviesView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MovieBloc, DataState>(
-        builder: (BuildContext context, DataState state) {
-      if (state is DataFetched<Iterable<Movie>>) {
-        final list = state.data.toList();
-        return GridView.builder(
-            itemCount: list.length,
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.7, crossAxisCount: 2),
-            itemBuilder: (BuildContext context, int index) => MovieItem(
-                  movie: list[index],
-                  index: index,
-                ));
-      }
-      return Center(child: CircularProgressIndicator());
-    });
+    return Container(
+      margin: EdgeInsets.all(20),
+      child: BlocBuilder<MovieBloc, DataState>(
+          builder: (BuildContext context, DataState state) {
+        if (state is DataFetched<Iterable<Movie>>) {
+          final list = state.data.toList();
+          return GridView.builder(
+            cacheExtent: 300,
+              itemCount: list.length,
+              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.6,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20),
+              itemBuilder: (BuildContext context, int index) => MovieItem(
+                    movie: list[index],
+                    index: index,
+                  ));
+        }
+        return Center(child: CircularProgressIndicator());
+      }),
+    );
   }
 }
 

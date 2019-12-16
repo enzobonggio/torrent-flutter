@@ -36,39 +36,37 @@ class _TorrentsViewState extends State<TorrentsView> {
   Widget build(BuildContext context) {
     BlocProvider.of<TorrentBloc>(context)..add(FetchData());
     return Container(
-      color: Colors.grey,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.grey,
-          body: Container(
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: BlocBuilder<TorrentBloc, DataState>(
-                      builder: (BuildContext context, DataState state) {
-                    if (state is DataFetched<Iterable<TorrentResponse>>) {
-                      final list = state.data.toList();
-                      return GridView.builder(
-                          itemCount: list.length,
-                          gridDelegate:
-                              new SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 6, crossAxisCount: 1),
-                          itemBuilder: (BuildContext context, int index) =>
-                              Column(children: <Widget>[
-                                Text(list[index].name),
-                                LinearPercentIndicator(
-                                  percent: list[index].percentage,
-                                )
-                              ]));
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  }),
-                )
-              ],
-            ),
-          ),
-        ),
+      margin: EdgeInsets.all(20),
+      color: Colors.black,
+      child: Column(
+        children: <Widget>[
+          Flexible(
+            flex: 1,
+            child: BlocBuilder<TorrentBloc, DataState>(
+                builder: (BuildContext context, DataState state) {
+              if (state is DataFetched<Iterable<TorrentResponse>>) {
+                final list = state.data.toList();
+                return GridView.builder(
+                    itemCount: list.length,
+                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 6, crossAxisCount: 1),
+                    itemBuilder: (BuildContext context, int index) =>
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                          Text(list[index].name, style: TextStyle(color: Colors.white),),
+                          LinearPercentIndicator(
+                            lineHeight: 30,
+                            padding: EdgeInsets.all(0),
+                            progressColor: Colors.green,
+                            percent: list[index].percentage,
+                          )
+                        ]));
+              }
+              return Center(child: CircularProgressIndicator());
+            }),
+          )
+        ],
       ),
     );
   }

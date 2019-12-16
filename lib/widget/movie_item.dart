@@ -35,7 +35,7 @@ class _MovieItemState extends State<MovieItem> {
         condition: (before, after) =>
             (before == widget.index && after != widget.index) ||
             (before != widget.index && after == widget.index),
-        builder: (BuildContext context, int selectedIndex) => InkWell(
+        builder: (BuildContext context, int selectedIndex) => GestureDetector(
               onTap: () => _selectMovieBloc.add(widget.index),
               child: Column(children: <Widget>[
                 Container(
@@ -45,9 +45,8 @@ class _MovieItemState extends State<MovieItem> {
                     child: (widget.index == selectedIndex
                         ? Stack(alignment: Alignment.center, children: <Widget>[
                             Image.network(widget.movie.image,
-                                height: 240,
-                                width: 170,
-                                color: Color.fromRGBO(255, 255, 255, 0.5),
+                                fit: BoxFit.fill,
+                                color: Color.fromRGBO(255, 255, 255, 0.3),
                                 colorBlendMode: BlendMode.modulate),
                             Column(
                                 children: widget.movie.torrents
@@ -78,9 +77,8 @@ class _MovieItemState extends State<MovieItem> {
                           ])
                         : FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,
-                            image: widget.movie.image,
-                            height: 240,
-                            width: 170))),
+                            fit: BoxFit.fill,
+                            image: widget.movie.image))),
                 Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(

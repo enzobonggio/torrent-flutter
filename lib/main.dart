@@ -32,6 +32,9 @@ class MyApp extends StatelessWidget {
           navigatorKey: _navigatorKey,
           onGenerateRoute: generateRoute,
           initialRoute: Routes.HOME,
+          darkTheme: ThemeData(
+            // additional settings go here
+          ),
           theme: ThemeData(
             // This is the theme of your application.
             //
