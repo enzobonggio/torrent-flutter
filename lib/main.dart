@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:torrent_media/navigator/navigator_bloc.dart';
 import 'package:torrent_media/navigator/routes.dart';
 import 'package:torrent_media/view/home_view.dart';
+import 'package:torrent_media/view/torrents_view.dart';
+import 'package:torrent_media/widget/movie_item.dart';
+
+import 'view/movies_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +24,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<TorrentBloc>(
             create: (BuildContext context) => TorrentBloc()),
         BlocProvider<MovieBloc>(create: (BuildContext context) => MovieBloc()),
+        BlocProvider<SelectMovieBloc>(
+            create: (BuildContext context) => SelectMovieBloc()),
       ],
       child: MaterialApp(
           title: 'Torrent Media',
