@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:torrent_media/navigator/navigator_bloc.dart';
-import 'package:torrent_media/navigator/routes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:torrent_media/app_localizations.dart';
+import 'package:torrent_media/core/navigator/navigator_bloc.dart';
+import 'package:torrent_media/core/navigator/routes.dart';
+import 'package:torrent_media/features/movies/presentation/bloc/movie_bloc.dart';
+import 'package:torrent_media/features/movies/presentation/widgets/movie_item.dart';
+import 'package:torrent_media/features/torrents/presentation/bloc/torrent_bloc.dart';
+import 'package:torrent_media/injection_container.dart';
 import 'package:torrent_media/view/home_view.dart';
-import 'package:torrent_media/view/torrents_view.dart';
-import 'package:torrent_media/widget/movie_item.dart';
 
-import 'view/movies_view.dart';
+import 'injection_container.dart' as di;
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
@@ -22,29 +30,40 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider>[
         BlocProvider<TorrentBloc>(
-            create: (BuildContext context) => TorrentBloc()),
-        BlocProvider<MovieBloc>(create: (BuildContext context) => MovieBloc()),
+            create: (BuildContext context) => sl<TorrentBloc>()),
+        BlocProvider<MovieBloc>(
+            create: (BuildContext context) => sl<MovieBloc>()),
         BlocProvider<SelectMovieBloc>(
             create: (BuildContext context) => SelectMovieBloc()),
       ],
       child: MaterialApp(
           title: 'Torrent Media',
+          supportedLocales: [Locale('es', 'AR'), Locale('en')],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportLocales) {
+            if (locale == null) return supportLocales.first;
+            for (final supportLocale in supportLocales) {
+              if (supportLocale.languageCode == locale.languageCode &&
+                  supportLocale.countryCode == locale.countryCode) {
+                return supportLocale;
+              }
+              if (supportLocale.languageCode == locale.languageCode) {
+                return supportLocale;
+              }
+            }
+            return supportLocales.first;
+          },
           navigatorKey: _navigatorKey,
           onGenerateRoute: generateRoute,
           initialRoute: Routes.HOME,
           darkTheme: ThemeData(
-            // additional settings go here
-          ),
+              // additional settings go here
+              ),
           theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
             primarySwatch: Colors.blue,
           )),
     );

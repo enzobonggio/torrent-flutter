@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:torrent_media/view/movies_view.dart';
-import 'package:torrent_media/view/torrents_view.dart';
+import 'package:torrent_media/app_localizations.dart';
+import 'package:torrent_media/features/movies/presentation/pages/movies_view.dart';
+import 'package:torrent_media/features/torrents/presentation/pages/torrents_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -43,14 +44,14 @@ class _HomeViewState extends State<HomeView> {
                 items: [
                   BottomNavigationBarItem(
                     title: Text(
-                      'movies',
+                      AppLocalizations.of(context).translate('movies_title'),
                       style: TextStyle(color: Colors.white),
                     ),
                     icon: Icon(Icons.home, color: Colors.white),
                   ),
                   BottomNavigationBarItem(
                       title: Text(
-                        'torrents',
+                        AppLocalizations.of(context).translate('torrents_title'),
                         style: TextStyle(color: Colors.white),
                       ),
                       icon: Icon(Icons.format_list_bulleted, color: Colors.white,))
